@@ -1,0 +1,7 @@
+[Service]
+WorkingDirectory=/home/ADS_WB_Bot
+User=root
+ExecStart=/home/ADS_WB_Bot/venv/bin/python3.10 main.py
+[Install]
+WantedBy=multi-user.target
+EOF
