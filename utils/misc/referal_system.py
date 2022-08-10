@@ -8,6 +8,7 @@ from utils.decorators import exception_control
 
 @exception_control.func_exception_control
 async def func_referal(update: Message, referer_id: int) -> None:
+    """Реализация реферальной системы доступа к запросам"""
 
     count_ref = dbase.count_referals(update=update, user_id=referer_id)
 

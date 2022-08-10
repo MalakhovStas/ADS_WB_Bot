@@ -1,3 +1,5 @@
+"""Модуль методов доступных только администраторам"""
+
 import time
 
 from aiogram.dispatcher import FSMContext

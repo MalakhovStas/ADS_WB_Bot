@@ -13,6 +13,7 @@ from utils.misc import admins_send_message
 @exception_control.func_exception_control
 async def func_response(message: Message, state: FSMContext,
                         response: Dict | List, nmid: str = None, url: str = None) -> None:
+    """Формирует и отравляет ответ на запрос пользователя"""
 
     if isinstance(response, Dict):
         adverts = response.get('adverts')
@@ -32,8 +33,18 @@ async def func_response(message: Message, state: FSMContext,
     # print("адвертс:", adverts)
     # print("респонз:", response)
 
+    current_state = await state.get_state()
+
+    req_type = 'реклама в карточке' if current_state.endswith('card_request') else 'реклама в поиске'
+    answer = '' if (adverts and adverts != 'null') else '\n<b>Ответ:</b> Некорректный запрос'
+    await admins_send_message.func_admins_message(update=message,
+                                                  message=f'<b>ID:</b> {message.from_user.id}, '
+                                                          f'<b>Имя:</b> {message.from_user.first_name}\n'
+                                                          f'<b>Контакт:</b> <a href="tg://user?id='
+                                                          f'{message.from_user.id}">{message.from_user.username}</a>\n'
+                                                          f'<b>Тип:</b> {req_type}\n'
+                                                          f'<b>Запрос:</b> {message.text}{answer}')
     if adverts and adverts != 'null':
-        current_state = await state.get_state()
         line = '&#127760 Реальные ставки рекламы в\n'
         if current_state.endswith('card_request'):
             line += f"карточке товара по артикулу: " \
@@ -59,7 +70,8 @@ async def func_response(message: Message, state: FSMContext,
     else:
         await bot.send_message(chat_id=message.from_user.id,
                                text=bot_messages.BotSays.say('not response'), reply_markup=keyboard)
-        await admins_send_message.func_admins_message(update=message,
+        # По запросу Александра, эта информация направлена только тех-админам, возможно позже скрою её совсем
+        await admins_send_message.func_admins_message(update=message, exc=True,
                                                       message=f'&#9888 <b>Некорректный запрос пользователя:</b>\n'
                                                               f'<b>ID:</b> {message.from_user.id}\n'
                                                               f'<b>Имя:</b> {message.from_user.first_name}\n'

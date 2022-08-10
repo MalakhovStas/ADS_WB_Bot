@@ -17,7 +17,8 @@ async def func_admins_message(update=None, exc=None, message=None, disable_previ
                 if message:
                     for admin in tech_admins:
                         time.sleep(0.3)
-                        await bot.send_message(chat_id=admin, text=message)
+                        await bot.send_message(chat_id=admin, text=message,
+                                               disable_web_page_preview=disable_preview_page)
                 else:
                     if len(inspect.trace()) > 1:
                         track = inspect.trace()[1]

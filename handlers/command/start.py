@@ -24,9 +24,9 @@ async def start(message: Message, state: FSMContext, data_from_middlewares) -> N
     keyboard = await first_keyboard.func_keyboard(update=message)
 
     await bot.send_message(chat_id=message.chat.id, text=f"&#129302")
-    time.sleep(1.7)
-    message_text = f"{bot_messages.BotSays.say('user')}"
-    # message_text = '<b>Выберите что будем искать:</b>'
+    # time.sleep(1.7)
+    # message_text = f"{bot_messages.BotSays.say('user')}"
+    message_text = '<b>Выберите что будем искать:</b>'
     await bot.send_message(chat_id=message.chat.id, text=message_text, reply_markup=keyboard)
 
     if not data_from_middlewares:
